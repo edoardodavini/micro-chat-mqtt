@@ -3,7 +3,9 @@ A Micro chat built with MQTT over NodeJS.
 DB used is Mongo with mongoose
 
 ## Base Principles
+The challenge is to build a simple chat with NodeJS + Mongo as DB and an Angular Frontend.
 
+Why adding docker? How could you survive without!
 
 ## What's inside
 
@@ -26,3 +28,5 @@ DB used is Mongo with mongoose
 ## TODO
 * Dockerize Client
 * Enrich client
+* Deploy on GCP? That's interesting
+* Auto-deploy with Github actions

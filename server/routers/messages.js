@@ -28,6 +28,7 @@ async function getMessage(req, res, next) {
 
 async function getMessages(req, res, next) {
 	// TODO: add filters
+	// TODO: Better validation
 	let messages = null;
 	if (req.query.roomPath) {
 		const room = await Room.find({mqttPath: req.query.roomPath})
@@ -45,7 +46,16 @@ async function editMessage(req, res, next) {
 }
 
 async function deleteMessage(req, res, next) {
-	res.status(501).send('TODO');
+    const message = await Message.findById(req.params.id);
+    if (!message) {
+        res.status(404).json({
+            "status": "error",
+            "message": "Message does not exists"
+        });
+    } else {
+        const deletedMessage = await message.delete();
+        res.status(200).json(deletedMessage);
+    }
 }
 
 

@@ -2,8 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { Room } from '../models/room.model';
-import { Observable, combineLatest, merge, of, zip } from 'rxjs';
-import { tap, catchError, map, switchMap, startWith } from 'rxjs/operators';
+import { Observable, combineLatest, merge, of, zip, from } from 'rxjs';
+import { tap, catchError, map, switchMap, startWith, filter, first, take } from 'rxjs/operators';
 import { Message } from '../models/message.model';
 import { MqttService, IMqttMessage } from 'ngx-mqtt';
 import { User } from '../models/user.model';
@@ -14,7 +14,7 @@ import { User } from '../models/user.model';
   styleUrls: ['./rooms.component.scss']
 })
 export class RoomsComponent implements OnInit, OnDestroy {
-  rooms: Observable<Room[]>;
+  rooms: Observable<Room>;
   messages: Observable<Message[]>;
 
   newRoomName: string = ''; // todo: I don't like this
@@ -35,14 +35,12 @@ export class RoomsComponent implements OnInit, OnDestroy {
 
     this.messages = this.route.paramMap.pipe(
       switchMap((params: ParamMap) => {
-        return this.loadRoom(params.get('path'))
+        return this.openRoom(params.get('path'))
       })
     );
-
-    // is subscribe safe?
   }
 
-  loadRoom(path: string): Observable<Message[]> {
+  openRoom(path: string): Observable<Message[]> {
     this.roomPath = path;
     let emptyMessage: IMqttMessage;
     return combineLatest(
@@ -58,8 +56,6 @@ export class RoomsComponent implements OnInit, OnDestroy {
     ).pipe(
       map(
         ([oldMessages, message]: [Array<Message>, IMqttMessage]): Array<Message> => {
-          console.log('Old Messages', oldMessages);
-          console.log('New Message', message);
           if (!message) {
             return oldMessages;
           } else {
@@ -73,7 +69,6 @@ export class RoomsComponent implements OnInit, OnDestroy {
         return this.api.messagesGet();
       })
     );
-    // return this.messages;
   }
 
   buildMessageFromMQTT(payload): Message {

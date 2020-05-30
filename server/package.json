@@ -18,6 +18,8 @@
     "mongoose": "^5.9.15",
     "mqemitter": "^4.2.0",
     "mqemitter-mongodb": "^7.0.2",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
     "websocket-stream": "^5.5.2"
   }
 }

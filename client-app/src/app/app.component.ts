@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from './services/api.service';
-import { tap, catchError, map, first } from 'rxjs/operators';
-import { Observable, combineLatest } from 'rxjs';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Observable } from 'rxjs';
+import { first, switchMap } from 'rxjs/operators';
 import { Room } from './models/room.model';
+import { ApiService } from './services/api.service';
 
 @Component({
   selector: 'app-root',
@@ -13,14 +14,20 @@ export class AppComponent implements OnInit{
   title = 'client-app';
 
   rooms: Observable<Room[]>;
+  room: Observable<Room>;
+
   newRoomName: string = '';
 
-  constructor(private api: ApiService) {
+  constructor(private api: ApiService, private route: ActivatedRoute) {
   }
-
 
   ngOnInit(): void {
     this.rooms = this.getRooms();
+    // this.room = this.route.paramMap.pipe(
+      // switchMap((params: ParamMap) => {
+      //   return this.api.roomsGetByPath(params.get('path'))
+      // })
+    // )
   }
 
   createRoom(newRoomName: string): void {

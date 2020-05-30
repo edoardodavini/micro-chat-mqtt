@@ -14,7 +14,6 @@ import { RoomsComponent } from './rooms/rooms.component';
 
 
 // Material
-import { MatSliderModule } from '@angular/material/slider';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -27,6 +26,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 // Mqtt Global configs
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
@@ -48,12 +48,12 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
-    MatSliderModule,
     MatToolbarModule,
     MatFormFieldModule,
     MatDividerModule,
     MatMenuModule,
     MatBadgeModule,
+    MatTooltipModule,
     MatButtonModule,
     MatCardModule,
     MatInputModule,

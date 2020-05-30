@@ -10,15 +10,19 @@ router.route('/:id')
     .delete(deleteRoom);
 router.get('/', getRooms).post('/', postRoom);
 
-function getRoom(req, res, next) {
-    Room.findById(req.params.id).then(room => {
-        res.status(200).json(room);
-    })
+async function getRoom(req, res, next) {
+    const room = await Room.findById(req.params.id);
+    res.status(200).json(room);
 }
 
 async function getRooms(req, res, next) {
-    const rooms = await Room.find();
-    res.status(200).json(rooms);
+    if (req.query.path) {
+        const room = await Room.find({mqttPath: req.query.path})
+        res.status(200).json(room);
+	} else {
+        const rooms = await Room.find();
+        res.status(200).json(rooms);
+    }
 }
 
 async function postRoom(req, res, next) {
@@ -42,7 +46,7 @@ async function postRoom(req, res, next) {
 }
 
 async function editRoom(req, res, next) {
-    const room = await Room.findOne({ _id: req.params.id })
+    const room = await Room.findById(req.params.id)
 
     if (req.body.name) {
         room.name = req.body.name;
@@ -54,9 +58,17 @@ async function editRoom(req, res, next) {
     res.send(room)
 }
 
-function deleteRoom(req, res, next) {
-    res.status(501).send('TODO');
+async function deleteRoom(req, res, next) {
+    const room = await Room.findById(req.params.id);
+    if (!room) {
+        res.status(404).json({
+            "status": "error",
+            "message": "Room does not exists"
+        });
+    } else {
+        const deletedRoom = await room.delete();
+        res.status(200).json(deletedRoom);
+    }
 }
-
 
 module.exports = router;

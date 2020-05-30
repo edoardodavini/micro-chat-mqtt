@@ -13,6 +13,8 @@ import { Room } from '../models/room.model';
 export class ApiService {
 
   baseUrl = 'http://localhost:30000/api/'
+  
+  // selected
   private user: User;
   constructor(private http: HttpClient) { 
     const lsUser = localStorage.getItem('user');
@@ -24,6 +26,9 @@ export class ApiService {
   // ROOMS
   roomsGet(): Observable<Room[]> {
     return this.http.get<Room[]>(this.baseUrl + 'rooms/');
+  }
+  roomsGetByPath(path: string): Observable<Room> {
+    return this.http.get<Room>(this.baseUrl + 'rooms?path=' + path);
   }
   roomsPost(room: Room): Observable<Room> {
     return this.http.post<Room>(this.baseUrl + 'rooms/', room);

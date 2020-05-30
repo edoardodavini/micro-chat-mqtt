@@ -5,13 +5,19 @@
 .users {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-evenly;
 
     .user {
-        width: 380px;
-        margin: 0.2rem;
+        width: 360px;
+        margin: 0.8rem;
         .mat-card-footer {
             font-size: 0.75rem;
+        }
+        .user-actions {
+            display: flex;
+            flex-direction: wrap;
+            justify-content: space-between;
         }
     }
     
