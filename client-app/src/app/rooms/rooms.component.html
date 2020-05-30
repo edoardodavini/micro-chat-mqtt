@@ -1,0 +1,22 @@
+<mat-card class="message" *ngFor="let item of messages | async">
+    <mat-card-header>
+        <div mat-card-avatar class="card-header-image" style="background-image: url({{item.user?.imageUrl}});"></div>
+        <mat-card-title>{{item.user?.displayName}}</mat-card-title>
+        <mat-card-subtitle>{{item.date | date : 'medium'}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        {{ item.message }}
+    </mat-card-content>
+    <mat-card-footer>
+        {{ item.room?.mqttPath}}
+    </mat-card-footer>
+</mat-card>
+<!-- *ngIf="auth.user$ | async as user" -->
+<mat-form-field appearance="outline" class="send-message">
+    <mat-label>Send a message</mat-label>
+    <input type="text" matInput placeholder="Write a message" [(ngModel)]="message.message"
+        (keydown)="keyDownFunction($event)">
+    <mat-icon matSuffix>send</mat-icon>
+    <mat-hint>A cool message</mat-hint>
+</mat-form-field>
+<button mat-raised-button (click)="submit()">Send</button>

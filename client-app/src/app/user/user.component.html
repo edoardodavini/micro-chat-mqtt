@@ -1,0 +1,44 @@
+<h2>Admin panel</h2>
+<p>This should've been just a user page. But I'm too lazy and this is an admin page</p>
+
+<h4>Selected User</h4>
+<mat-card class="user" *ngIf="api.getUser() as item">
+    <mat-card-header>
+        <div mat-card-avatar class="card-header-image" style="background-image: url({{item.imageUrl}});"></div>
+        <mat-card-title>{{item.displayName}}</mat-card-title>
+      </mat-card-header>
+    <mat-card-content>
+        <span class="username">{{item.username}}</span>
+        <pre class="password">{{item.password}}</pre>
+        <span class="email">{{ item.email}}</span>
+        <pre class="mqtt-id">{{ item.mqttId}}</pre>
+    </mat-card-content>
+</mat-card>
+
+<h4>List of available users</h4>
+<div class="users">
+    <mat-card class="user" *ngFor="let item of users | async">
+        <mat-card-header>
+            <div mat-card-avatar class="card-header-image" style="background-image: url({{item.imageUrl}});"></div>
+            <mat-card-title>{{item.displayName}}</mat-card-title>
+          </mat-card-header>
+        <mat-card-content>
+            <span class="username">{{item.username}}</span>
+            <pre class="password">{{item.password}}</pre>
+            <span class="email">{{ item.email}}</span>
+            <pre class="mqtt-id">{{ item.mqttId}}</pre>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-button>EDIT</button>
+            <button mat-button>DELETE</button>
+            <button mat-button (click)="selectUser(item)">CHOOSE</button>
+          </mat-card-actions>
+    </mat-card>
+</div>
+
+
+<pre>{{users | async | json}}</pre>
+
+<pre>{{rooms | async | json}}</pre>
+
+<pre>{{messages | async | json}}</pre>

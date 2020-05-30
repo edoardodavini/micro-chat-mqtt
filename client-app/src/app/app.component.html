@@ -1,0 +1,35 @@
+
+<mat-drawer-container class="full-page" autosize>
+
+    <mat-drawer #drawer mode="side" class="navigation-drawer">
+        <mat-nav-list>
+            <a mat-list-item [routerLink]="['/']">Users List</a>
+            <mat-divider></mat-divider>
+            <a mat-list-item [routerLink]="['/rooms', room.mqttPath]" *ngFor="let room of rooms | async">{{room.name}}</a>
+            <mat-divider></mat-divider>
+            <p>Create a room</p>
+            <mat-form-field appearance="outline">
+                <mat-label>Create a room</mat-label>
+                <input type="text" matInput placeholder="Room Name" [(ngModel)]="newRoomName">
+                <mat-icon matSuffix>add</mat-icon>
+                <mat-hint>New Room Name</mat-hint>
+            </mat-form-field>
+            <button (click)="createRoom(newRoomName)" mat-raised-button>Create</button>
+         </mat-nav-list>
+    </mat-drawer>
+
+    <mat-toolbar color="primary">
+
+        <mat-toolbar-row>
+            <div>
+                <button type="button" mat-button (click)="drawer.toggle()">
+                    <mat-icon>menu</mat-icon>
+                </button>
+                The best chat ever
+            </div>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <section>
+        <router-outlet></router-outlet>
+    </section>
+</mat-drawer-container>
