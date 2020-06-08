@@ -7,7 +7,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const cors = require('cors');
 const User = require('./models/user');
 
-const port = process.env.PORT || 30000;
+const port = process.env.PORT || 3000;
 const MONGO_URL = process.env.MONGO_URL ? process.env.MONGO_URL : 'mongodb://devroot:devroot@localhost:27017/chat?authSource=admin';
 
 app.use(cors())

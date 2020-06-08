@@ -1,26 +1,13 @@
 version: '3'
 
 services:
-  # server
-  node-app:
-    build: 
-      context: ./server
-      dockerfile: Dockerfile
-    container_name: NodeApp
-    restart: always
-    ports: 
-      - 30000:30000
-    depends_on: 
-      - mongo
-    environment: 
-      MONGO_URL: "mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE}?authSource=admin"
-
   # database
   mongo:
     image: mongo
     container_name: MongoDB
     volumes: 
       - mongo-volume:/data/db
+      - ./mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
     ports:
       # - '27017-27019:27017-27019'
       - '${MONGO_PORT}:${MONGO_PORT}'
@@ -45,22 +32,35 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_USERNAME}
       ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_PASSWORD}
 
-  # mqtt broker
-  # broker:
-  #   build: 
-  #     context: ./broker
-  #     dockerfile: Dockerfile
-  #   container_name: MqttBroker
-  #   restart: always
-  #   ports: 
-  #     - 8883:8883
-  #     - 9001:9001
-  #   depends_on: 
-  #     - mongo
-  #   environment: 
-  #     MONGO_URL: "mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE}?authSource=admin"
+  # server
+  node-app:
+    build: 
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: NodeApp
+    restart: always
+    ports: 
+      - 3000:3000
+      - 8883:8883
+      - 8885:8885
+    depends_on: 
+      - mongo
+    # command: ["../wait-for-it.sh", "{MONGO_HOST}:${MONGO_PORT}", "--", "nodemon", "app.js"]
+    # command: ["nodemon", "app.js"]
+    environment: 
+      PORT: 3000
+      WAIT_HOSTS: ${MONGO_HOST}:${MONGO_PORT}
+      MONGO_URL: "mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE}?authSource=admin"
 
-
+  # TODO: Add Client into the docker-compose file
+  # client
+  # client:
+  #   container_name: ClientApp
+  #   image: danjellz/http-server
+  #   volumes:
+  #     - './client-app:/app'
+  #   ports:
+  #     - '4201:4200'
 
 volumes:
   mongo-volume:

@@ -12,7 +12,8 @@ import { Room } from '../models/room.model';
 })
 export class ApiService {
 
-  baseUrl = 'http://localhost:30000/api/'
+  // TODO: add environment variables to handle url
+  baseUrl = 'http://localhost:3000/api/'
   
   // selected
   private user: User;
